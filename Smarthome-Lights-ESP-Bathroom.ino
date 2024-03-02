@@ -8,19 +8,15 @@
 
 //LED
 #include <Adafruit_NeoPixel.h>
-#define DESK_LED_PIN D1
-#define DESK_LED_NUM 61
-#define CEILING_LED_PIN D3
-#define CEILING_LED_NUM 151
+#define LED_PIN D6
+#define LED_NUM 181
 
-Adafruit_NeoPixel deskStrip = Adafruit_NeoPixel(DESK_LED_NUM, DESK_LED_PIN, NEO_GRB + NEO_KHZ800); 
-Adafruit_NeoPixel ceilingStrip = Adafruit_NeoPixel(CEILING_LED_NUM, CEILING_LED_PIN, NEO_GRB + NEO_KHZ800); 
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_NUM, LED_PIN, NEO_GRB + NEO_KHZ800); 
 
 boolean valuesUpdated = false;
 
 #include "LedController.h"
-LedController *deskLights;
-LedController *ceilingLights;
+LedController *lights;
 
 //Homekit
 #include "HomeKit.h"
@@ -36,8 +32,7 @@ void setup() {
 
 	wifi_connect();
 
-  deskLights = new LedController(&deskStrip, DESK_LED_NUM, 1500);
-  ceilingLights = new LedController(&ceilingStrip, CEILING_LED_NUM, 1506);
+  lights = new LedController(&strip, LED_NUM, 1500);
 
   setupHomeKit();
   setupAlexa();
@@ -53,8 +48,7 @@ void loop() {
 	homeKitLoop();
   espalexa.loop();
 
-  deskLights->frame();
-  ceilingLights->frame();
+  lights->frame();
 
   if(valuesUpdated){
 
